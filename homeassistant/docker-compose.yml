@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  homeassistant:
+    container_name: homeassistant
+    restart: always
+    image: "ghcr.io/home-assistant/raspberrypi4-homeassistant:stable"
+    volumes:
+      - /home/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/dbus/:/var/run/dbus/
+    privileged: true
+    network_mode: host
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.hass.rule=Host(`home.riccardotornesello.it`)
+      - traefik.http.routers.hass.tls=true
+      - traefik.http.services.hass-service.loadbalancer.server.port=8123
