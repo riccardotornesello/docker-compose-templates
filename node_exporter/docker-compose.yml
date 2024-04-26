@@ -1,0 +1,15 @@
+services:
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    user: 1000:1000
+    command:
+      - "--path.rootfs=/host"
+      - "--web.config.file=/configuration.yml"
+    restart: unless-stopped
+    volumes:
+      - "/:/host:ro,rslave"
+      - "./tls:/tls"
+      - "./configuration.yml:/configuration.yml"
+    ports:
+      - "9100:9100"
